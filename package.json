@@ -12,8 +12,18 @@
     "appId": "com.pomodoray.app",
     "productName": "Pomodoray",
     "win": {
-      "target": "portable",
-      "icon": null
+      "target": "nsis",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": null,
+      "uninstallerIcon": null,
+      "installerHeaderIcon": null,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Pomodoray"
     },
     "files": [
       "main.js",
