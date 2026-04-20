@@ -1,0 +1,35 @@
+{
+  "name": "pomodoray",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "A beautiful Pomodoro timer desktop app",
+  "author": "Pomodoray",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.pomodoray.app",
+    "productName": "Pomodoray",
+    "win": {
+      "target": "portable",
+      "icon": null
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "styles.css"
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^41.2.1",
+    "electron-builder": "^26.8.1"
+  }
+}
