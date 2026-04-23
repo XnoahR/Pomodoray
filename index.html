@@ -91,252 +91,315 @@
   </header>
 
   <!-- Main Content -->
-  <main class="relative z-10 h-[calc(100%-42px)]">
-    <div class="absolute inset-0 flex flex-col items-center overflow-y-auto scrollbar-thin px-6 pt-5 pb-4 gap-5" id="mainScroll">
+  <main class="relative z-10 h-[calc(100%-42px)] flex">
+    <!-- Left Sidebar -->
+    <nav class="w-[64px] flex-shrink-0 border-r border-white/[0.06] flex flex-col items-center py-4 gap-6" id="sidebarNav">
+      <button class="sidebar-btn workspace-tab active" data-workspace="pomodoro" title="Timer">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </button>
+      <button class="sidebar-btn workspace-tab" data-workspace="notes" title="Notes">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </button>
+    </nav>
 
-      <!-- Mode Selector -->
-      <div class="relative flex gap-1 p-1 bg-surface-50 rounded-full border border-white/[0.06]" id="modeSelector">
-        <button data-mode="pomodoro" class="mode-btn active">Focus</button>
-        <button data-mode="shortBreak" class="mode-btn">Short Break</button>
-        <button data-mode="longBreak" class="mode-btn">Long Break</button>
-        <div class="mode-indicator" id="modeIndicator"></div>
-      </div>
+    <!-- Workspaces Container -->
+    <div class="flex-1 relative overflow-hidden" id="workspacesContainer">
 
-      <!-- Timer -->
-      <div class="relative w-[220px] h-[220px] flex items-center justify-center flex-shrink-0" id="timerWrapper">
-        <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 240 240">
-          <circle class="timer-ring-bg" cx="120" cy="120" r="108" />
-          <circle class="timer-ring-progress" id="timerProgress" cx="120" cy="120" r="108" />
-        </svg>
-        <div class="flex flex-col items-center gap-1 z-10">
-          <span class="text-[52px] font-bold tracking-tighter tabular-nums leading-none bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent" id="timerText">25:00</span>
-          <span class="text-[10px] font-semibold tracking-[2px] uppercase opacity-80 transition-colors duration-500" id="timerLabel" style="color: var(--accent)">FOCUS TIME</span>
+      <!-- ═══ Workspace: Pomodoro ═══ -->
+      <div id="workspace-pomodoro" class="absolute inset-0 flex flex-col items-center overflow-y-auto scrollbar-thin px-6 pt-5 pb-4 gap-5">
+
+        <!-- Mode Selector -->
+        <div class="relative flex gap-1 p-1 bg-surface-50 rounded-full border border-white/[0.06]" id="modeSelector">
+          <button data-mode="pomodoro" class="mode-btn active">Focus</button>
+          <button data-mode="shortBreak" class="mode-btn">Short Break</button>
+          <button data-mode="longBreak" class="mode-btn">Long Break</button>
+          <div class="mode-indicator" id="modeIndicator"></div>
         </div>
-      </div>
 
-      <!-- Controls -->
-      <div class="flex items-center gap-4">
-        <button id="resetBtn" class="ctrl-btn-secondary" title="Reset (R)">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 1 9 9 9.75 9.75 0 0 1-6.74-2.74L3 21"/><path d="M3 10V3h7"/></svg>
-        </button>
-        <button id="startBtn" class="ctrl-btn-primary" title="Start/Pause (Space)">
-          <svg class="play-icon w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,3 20,12 6,21"/></svg>
-          <svg class="pause-icon hidden w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/></svg>
-        </button>
-        <button id="skipBtn" class="ctrl-btn-secondary" title="Skip (S)">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5,4 15,12 5,20" fill="currentColor" stroke="none"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-        </button>
-      </div>
+        <!-- Timer -->
+        <div class="relative w-[220px] h-[220px] flex items-center justify-center flex-shrink-0" id="timerWrapper">
+          <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 240 240">
+            <circle class="timer-ring-bg" cx="120" cy="120" r="108" />
+            <circle class="timer-ring-progress" id="timerProgress" cx="120" cy="120" r="108" />
+          </svg>
+          <div class="flex flex-col items-center gap-1 z-10">
+            <span class="text-[52px] font-bold tracking-tighter tabular-nums leading-none bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent" id="timerText">25:00</span>
+            <span class="text-[10px] font-semibold tracking-[2px] uppercase opacity-80 transition-colors duration-500" id="timerLabel" style="color: var(--accent)">FOCUS TIME</span>
+          </div>
+        </div>
 
-      <!-- Session Dots -->
-      <div class="flex flex-col items-center gap-2">
-        <div class="flex gap-2" id="sessionDots"></div>
-        <span class="text-[11px] font-medium text-white/25 tracking-wide" id="sessionLabel">Session 1 of 4</span>
-      </div>
-
-      <!-- Motivational Quote -->
-      <div class="w-full px-2">
-        <p class="text-center text-[11px] text-white/30 italic leading-relaxed transition-all duration-500" id="quoteText">"The secret of getting ahead is getting started."</p>
-      </div>
-
-      <!-- Tab Navigation -->
-      <div class="w-full flex border-b border-white/[0.06] gap-0" id="tabNav">
-        <button class="tab-btn active" data-tab="tasks">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          Tasks
-        </button>
-        <button class="tab-btn" data-tab="sounds">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-          Sounds
-        </button>
-        <button class="tab-btn" data-tab="settings">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-          Settings
-        </button>
-        <button class="tab-btn" data-tab="stats">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-          Stats
-        </button>
-      </div>
-
-      <!-- Tab Panels -->
-      <!-- Tasks Panel -->
-      <div class="tab-panel w-full flex flex-col gap-2" id="panel-tasks">
-        <div class="flex gap-2 w-full">
-          <button class="add-folder-btn" id="addFolderBtn" title="New folder">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
-            New Folder
+        <!-- Controls -->
+        <div class="flex items-center gap-4">
+          <button id="resetBtn" class="ctrl-btn-secondary" title="Reset (R)">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 1 9 9 9.75 9.75 0 0 1-6.74-2.74L3 21"/><path d="M3 10V3h7"/></svg>
+          </button>
+          <button id="startBtn" class="ctrl-btn-primary" title="Start/Pause (Space)">
+            <svg class="play-icon w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,3 20,12 6,21"/></svg>
+            <svg class="pause-icon hidden w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/></svg>
+          </button>
+          <button id="skipBtn" class="ctrl-btn-secondary" title="Skip (S)">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5,4 15,12 5,20" fill="currentColor" stroke="none"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
           </button>
         </div>
-        <div class="flex flex-col gap-2 overflow-y-auto scrollbar-thin max-h-[280px]" id="folderList"></div>
-        <div class="text-center text-[10px] text-white/15 py-2" id="taskEmpty">No folders yet — create one above!</div>
-      </div>
 
-      <!-- Sounds Panel -->
-      <div class="tab-panel w-full hidden" id="panel-sounds">
-        <div class="grid grid-cols-2 gap-2">
-          <div class="sound-card" data-sound="rain">
-            <div class="sound-icon">🌧️</div>
-            <div class="sound-label">Rain</div>
-            <input type="range" class="sound-slider" min="0" max="100" value="50">
-            <div class="sound-toggle" data-active="false">OFF</div>
+        <!-- Session Dots -->
+        <div class="flex flex-col items-center gap-2">
+          <div class="flex gap-2" id="sessionDots"></div>
+          <span class="text-[11px] font-medium text-white/25 tracking-wide" id="sessionLabel">Session 1 of 4</span>
+        </div>
+
+        <!-- Motivational Quote -->
+        <div class="w-full px-2">
+          <p class="text-center text-[11px] text-white/30 italic leading-relaxed transition-all duration-500" id="quoteText">"The secret of getting ahead is getting started."</p>
+        </div>
+
+        <!-- Tab Navigation (Tasks / Settings / Stats) -->
+        <div class="w-full flex border-b border-white/[0.06] gap-0" id="tabNav">
+          <button class="tab-btn active" data-tab="tasks">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Tasks
+          </button>
+          <button class="tab-btn" data-tab="settings">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            Settings
+          </button>
+          <button class="tab-btn" data-tab="stats">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            Stats
+          </button>
+        </div>
+
+        <!-- Tasks Panel -->
+        <div class="tab-panel w-full flex flex-col gap-2" id="panel-tasks">
+          <div class="flex gap-2 w-full">
+            <button class="add-folder-btn" id="addFolderBtn" title="New folder">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+              New Folder
+            </button>
           </div>
-          <div class="sound-card" data-sound="cafe">
-            <div class="sound-icon">☕</div>
-            <div class="sound-label">Café</div>
-            <input type="range" class="sound-slider" min="0" max="100" value="50">
-            <div class="sound-toggle" data-active="false">OFF</div>
-          </div>
-          <div class="sound-card" data-sound="fire">
-            <div class="sound-icon">🔥</div>
-            <div class="sound-label">Fireplace</div>
-            <input type="range" class="sound-slider" min="0" max="100" value="50">
-            <div class="sound-toggle" data-active="false">OFF</div>
-          </div>
-          <div class="sound-card" data-sound="wind">
-            <div class="sound-icon">🍃</div>
-            <div class="sound-label">Nature</div>
-            <input type="range" class="sound-slider" min="0" max="100" value="50">
-            <div class="sound-toggle" data-active="false">OFF</div>
-          </div>
-          <div class="sound-card" data-sound="waves">
-            <div class="sound-icon">🌊</div>
-            <div class="sound-label">Ocean</div>
-            <input type="range" class="sound-slider" min="0" max="100" value="50">
-            <div class="sound-toggle" data-active="false">OFF</div>
-          </div>
-          <div class="sound-card" data-sound="lofi">
-            <div class="sound-icon">🎵</div>
-            <div class="sound-label">Lo-fi</div>
-            <input type="range" class="sound-slider" min="0" max="100" value="50">
-            <div class="sound-toggle" data-active="false">OFF</div>
+          <div class="flex flex-col gap-2 overflow-y-auto scrollbar-thin max-h-[280px]" id="folderList"></div>
+          <div class="text-center text-[10px] text-white/15 py-2" id="taskEmpty">No folders yet — create one above!</div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="tab-panel w-full hidden" id="panel-settings">
+          <div class="flex flex-col gap-3">
+
+            <!-- Theme Picker — Redesigned -->
+            <div class="settings-group">
+              <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-3">Theme</h3>
+              <div class="theme-grid" id="themePicker">
+                <button class="theme-card active" data-theme-id="default">
+                  <div class="theme-swatch theme-default"></div>
+                  <span>Default</span>
+                </button>
+                <button class="theme-card" data-theme-id="noir">
+                  <div class="theme-swatch theme-noir"></div>
+                  <span>Noir</span>
+                </button>
+                <button class="theme-card" data-theme-id="retro">
+                  <div class="theme-swatch theme-retro"></div>
+                  <span>Retro</span>
+                </button>
+                <button class="theme-card" data-theme-id="sakura">
+                  <div class="theme-swatch theme-sakura"></div>
+                  <span>Sakura</span>
+                </button>
+                <button class="theme-card" data-theme-id="lavender">
+                  <div class="theme-swatch theme-lavender"></div>
+                  <span>Lavender</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Timer Durations -->
+            <div class="settings-group">
+              <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2">Timer Durations</h3>
+              <div class="flex flex-col gap-2">
+                <div class="setting-row">
+                  <label class="text-[13px] text-white/60">Focus</label>
+                  <div class="setting-stepper">
+                    <button class="step-btn" data-target="focusDuration" data-dir="-1">−</button>
+                    <span class="step-value" id="focusDuration">25</span>
+                    <span class="text-[10px] text-white/30">min</span>
+                    <button class="step-btn" data-target="focusDuration" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="setting-row">
+                  <label class="text-[13px] text-white/60">Short Break</label>
+                  <div class="setting-stepper">
+                    <button class="step-btn" data-target="shortBreakDuration" data-dir="-1">−</button>
+                    <span class="step-value" id="shortBreakDuration">5</span>
+                    <span class="text-[10px] text-white/30">min</span>
+                    <button class="step-btn" data-target="shortBreakDuration" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="setting-row">
+                  <label class="text-[13px] text-white/60">Long Break</label>
+                  <div class="setting-stepper">
+                    <button class="step-btn" data-target="longBreakDuration" data-dir="-1">−</button>
+                    <span class="step-value" id="longBreakDuration">15</span>
+                    <span class="text-[10px] text-white/30">min</span>
+                    <button class="step-btn" data-target="longBreakDuration" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="setting-row">
+                  <label class="text-[13px] text-white/60">Sessions per cycle</label>
+                  <div class="setting-stepper">
+                    <button class="step-btn" data-target="sessionsPerCycle" data-dir="-1">−</button>
+                    <span class="step-value" id="sessionsPerCycle">4</span>
+                    <button class="step-btn" data-target="sessionsPerCycle" data-dir="1">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preferences -->
+            <div class="settings-group">
+              <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2">Preferences</h3>
+              <div class="flex flex-col gap-2">
+                <div class="setting-row">
+                  <label class="text-[13px] text-white/60">Auto-start breaks</label>
+                  <div class="toggle-switch" id="autoStartBreak" data-on="false"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="setting-row">
+                  <label class="text-[13px] text-white/60">Auto-start focus</label>
+                  <div class="toggle-switch" id="autoStartFocus" data-on="false"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="setting-row">
+                  <label class="text-[13px] text-white/60">Desktop notifications</label>
+                  <div class="toggle-switch" id="notificationsToggle" data-on="true"><div class="toggle-knob"></div></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <p class="text-[10px] text-white/20 text-center mt-3">Mix ambient sounds to create your perfect focus environment</p>
-      </div>
 
-      <!-- Settings Panel -->
-      <div class="tab-panel w-full hidden" id="panel-settings">
-        <div class="flex flex-col gap-3">
-          <!-- Theme Picker -->
-          <div class="settings-group">
-            <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-3">Theme</h3>
-            <div class="flex gap-2 justify-center" id="themePicker">
-              <div class="theme-option theme-default active" data-theme-id="default" title="Default"></div>
-              <div class="theme-option theme-noir" data-theme-id="noir" title="Noir"></div>
-              <div class="theme-option theme-retro" data-theme-id="retro" title="Retro"></div>
-              <div class="theme-option theme-sakura" data-theme-id="sakura" title="Sakura"></div>
-              <div class="theme-option theme-lavender" data-theme-id="lavender" title="Lavender"></div>
-            </div>
-            <div class="flex justify-center mt-2">
-              <span class="text-[10px] text-white/30 font-medium tracking-wide" id="themeName">Default</span>
-            </div>
-          </div>
-
-          <!-- Timer Durations -->
-          <div class="settings-group">
-            <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2">Timer Durations</h3>
-            <div class="flex flex-col gap-2">
-              <div class="setting-row">
-                <label class="text-[13px] text-white/60">Focus</label>
-                <div class="setting-stepper">
-                  <button class="step-btn" data-target="focusDuration" data-dir="-1">−</button>
-                  <span class="step-value" id="focusDuration">25</span>
-                  <span class="text-[10px] text-white/30">min</span>
-                  <button class="step-btn" data-target="focusDuration" data-dir="1">+</button>
-                </div>
+        <!-- Stats Panel -->
+        <div class="tab-panel w-full hidden" id="panel-stats">
+          <div class="flex flex-col gap-3">
+            <div class="grid grid-cols-2 gap-2">
+              <div class="stat-card">
+                <div class="stat-value" id="statTodaySessions">0</div>
+                <div class="stat-label">Sessions Today</div>
               </div>
-              <div class="setting-row">
-                <label class="text-[13px] text-white/60">Short Break</label>
-                <div class="setting-stepper">
-                  <button class="step-btn" data-target="shortBreakDuration" data-dir="-1">−</button>
-                  <span class="step-value" id="shortBreakDuration">5</span>
-                  <span class="text-[10px] text-white/30">min</span>
-                  <button class="step-btn" data-target="shortBreakDuration" data-dir="1">+</button>
-                </div>
+              <div class="stat-card">
+                <div class="stat-value" id="statTodayMinutes">0</div>
+                <div class="stat-label">Minutes Today</div>
               </div>
-              <div class="setting-row">
-                <label class="text-[13px] text-white/60">Long Break</label>
-                <div class="setting-stepper">
-                  <button class="step-btn" data-target="longBreakDuration" data-dir="-1">−</button>
-                  <span class="step-value" id="longBreakDuration">15</span>
-                  <span class="text-[10px] text-white/30">min</span>
-                  <button class="step-btn" data-target="longBreakDuration" data-dir="1">+</button>
-                </div>
+              <div class="stat-card">
+                <div class="stat-value" id="statTotalSessions">0</div>
+                <div class="stat-label">Total Sessions</div>
               </div>
-              <div class="setting-row">
-                <label class="text-[13px] text-white/60">Sessions per cycle</label>
-                <div class="setting-stepper">
-                  <button class="step-btn" data-target="sessionsPerCycle" data-dir="-1">−</button>
-                  <span class="step-value" id="sessionsPerCycle">4</span>
-                  <button class="step-btn" data-target="sessionsPerCycle" data-dir="1">+</button>
-                </div>
+              <div class="stat-card">
+                <div class="stat-value" id="statStreak">0</div>
+                <div class="stat-label">Day Streak 🔥</div>
               </div>
             </div>
-          </div>
-
-          <!-- Preferences -->
-          <div class="settings-group">
-            <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2">Preferences</h3>
-            <div class="flex flex-col gap-2">
-              <div class="setting-row">
-                <label class="text-[13px] text-white/60">Auto-start breaks</label>
-                <div class="toggle-switch" id="autoStartBreak" data-on="false"><div class="toggle-knob"></div></div>
-              </div>
-              <div class="setting-row">
-                <label class="text-[13px] text-white/60">Auto-start focus</label>
-                <div class="toggle-switch" id="autoStartFocus" data-on="false"><div class="toggle-knob"></div></div>
-              </div>
-              <div class="setting-row">
-                <label class="text-[13px] text-white/60">Desktop notifications</label>
-                <div class="toggle-switch" id="notificationsToggle" data-on="true"><div class="toggle-knob"></div></div>
+            <div class="mt-1">
+              <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2">This Week</h3>
+              <div class="flex items-end justify-between gap-1 h-[80px] px-1" id="weekChart"></div>
+              <div class="flex justify-between px-1 mt-1">
+                <span class="text-[9px] text-white/20">Mon</span>
+                <span class="text-[9px] text-white/20">Tue</span>
+                <span class="text-[9px] text-white/20">Wed</span>
+                <span class="text-[9px] text-white/20">Thu</span>
+                <span class="text-[9px] text-white/20">Fri</span>
+                <span class="text-[9px] text-white/20">Sat</span>
+                <span class="text-[9px] text-white/20">Sun</span>
               </div>
             </div>
+            <button id="resetStatsBtn" class="text-[11px] text-white/20 hover:text-red-400 transition-colors mt-1 self-center">Reset all stats</button>
           </div>
         </div>
-      </div>
+      </div> <!-- End of Workspace Pomodoro -->
 
-      <!-- Stats Panel -->
-      <div class="tab-panel w-full hidden" id="panel-stats">
-        <div class="flex flex-col gap-3">
-          <div class="grid grid-cols-2 gap-2">
-            <div class="stat-card">
-              <div class="stat-value" id="statTodaySessions">0</div>
-              <div class="stat-label">Sessions Today</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statTodayMinutes">0</div>
-              <div class="stat-label">Minutes Today</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statTotalSessions">0</div>
-              <div class="stat-label">Total Sessions</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statStreak">0</div>
-              <div class="stat-label">Day Streak 🔥</div>
-            </div>
+      <!-- ═══ Workspace: Notes ═══ -->
+      <div id="workspace-notes" class="hidden absolute inset-0 flex flex-col overflow-hidden">
+
+        <!-- Note List View -->
+        <div id="notesListView" class="flex flex-col flex-1 relative px-5 py-4 gap-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-bold text-white tracking-tight">📝 Notes</h2>
+            <button class="add-folder-btn px-3 py-1.5" id="addNoteBtn" title="New Note">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              <span class="font-medium text-xs">New Note</span>
+            </button>
           </div>
-          <div class="mt-1">
-            <h3 class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2">This Week</h3>
-            <div class="flex items-end justify-between gap-1 h-[80px] px-1" id="weekChart"></div>
-            <div class="flex justify-between px-1 mt-1">
-              <span class="text-[9px] text-white/20">Mon</span>
-              <span class="text-[9px] text-white/20">Tue</span>
-              <span class="text-[9px] text-white/20">Wed</span>
-              <span class="text-[9px] text-white/20">Thu</span>
-              <span class="text-[9px] text-white/20">Fri</span>
-              <span class="text-[9px] text-white/20">Sat</span>
-              <span class="text-[9px] text-white/20">Sun</span>
-            </div>
+          <div class="flex-1 overflow-y-auto scrollbar-thin flex flex-col gap-2" id="notesList"></div>
+          <div class="text-center text-[11px] text-white/25 py-8 hidden" id="notesEmpty">
+            <div class="text-3xl mb-2">📄</div>
+            No notes yet — create one to start writing!
           </div>
-          <button id="resetStatsBtn" class="text-[11px] text-white/20 hover:text-red-400 transition-colors mt-1 self-center">Reset all stats</button>
         </div>
-      </div>
+
+        <!-- Note Editor View -->
+        <div id="notesEditView" class="hidden flex-col flex-1 w-full" style="-webkit-app-region: no-drag;">
+          <!-- Editor Header -->
+          <div class="flex items-center w-full px-3 py-2 border-b border-white/[0.06] bg-white/[0.02]">
+            <button class="w-7 h-7 flex flex-shrink-0 items-center justify-center text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-colors mr-2 cursor-pointer" id="notesBackBtn" title="Back to Notes">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <input type="text" id="noteTitleInput" class="flex-1 min-w-0 bg-transparent border-none text-[14px] font-semibold text-white/90 outline-none placeholder:text-white/20" style="user-select: text; -webkit-user-select: text;" placeholder="Note Title...">
+            <div class="flex gap-1 ml-2 flex-shrink-0">
+              <button class="editor-action-btn" id="toggleNotePreviewBtn" title="Toggle Preview (Ctrl+P)">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+              <button class="editor-action-btn text-red-400/60 hover:!text-red-400 hover:!bg-red-400/10" id="deleteNoteBtn" title="Delete Note">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6V20a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Markdown Toolbar -->
+          <div class="flex items-center gap-0.5 px-3 py-1.5 border-b border-white/[0.04] bg-white/[0.01] overflow-x-auto" id="mdToolbar">
+            <button class="md-tool-btn" data-md="heading" title="Heading (Ctrl+H)"><b>H</b></button>
+            <button class="md-tool-btn" data-md="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+            <button class="md-tool-btn" data-md="italic" title="Italic (Ctrl+I)"><em>I</em></button>
+            <button class="md-tool-btn" data-md="strikethrough" title="Strikethrough"><s>S</s></button>
+            <div class="w-px h-4 bg-white/10 mx-1"></div>
+            <button class="md-tool-btn" data-md="ul" title="Bullet List">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg>
+            </button>
+            <button class="md-tool-btn" data-md="ol" title="Numbered List">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="8" fill="currentColor" stroke="none">1</text><text x="2" y="14" font-size="8" fill="currentColor" stroke="none">2</text><text x="2" y="20" font-size="8" fill="currentColor" stroke="none">3</text></svg>
+            </button>
+            <button class="md-tool-btn" data-md="checklist" title="Checklist">☑</button>
+            <div class="w-px h-4 bg-white/10 mx-1"></div>
+            <button class="md-tool-btn" data-md="code" title="Inline Code">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </button>
+            <button class="md-tool-btn" data-md="codeblock" title="Code Block">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="14 9 18 12 14 15" transform="scale(0.7) translate(5,5)"/><polyline points="10 15 6 12 10 9" transform="scale(0.7) translate(5,5)"/></svg>
+            </button>
+            <button class="md-tool-btn" data-md="quote" title="Blockquote">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+            </button>
+            <button class="md-tool-btn" data-md="link" title="Link">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+            <button class="md-tool-btn" data-md="hr" title="Horizontal Rule">―</button>
+          </div>
+
+          <!-- Editor Body — LiveEditor mounts here -->
+          <div class="relative flex-1 w-full overflow-hidden" id="editorContainer" style="-webkit-app-region: no-drag;">
+          </div>
+
+          <!-- Status Bar -->
+          <div class="flex justify-between items-center text-[10px] text-white/30 px-4 py-2 border-t border-white/[0.06] font-medium tracking-wide bg-black/30">
+            <div class="flex items-center gap-3">
+              <span id="noteStatus">Saved</span>
+              <span class="text-white/15">•</span>
+              <span id="noteFilename" class="text-white/20 truncate max-w-[150px]"></span>
+            </div>
+            <span id="noteWordCount">0 words</span>
+          </div>
+        </div>
+      </div> <!-- End of Workspace Notes -->
 
     </div>
   </main>
 
-  <script src="renderer.js"></script>
+  <script type="module" src="renderer.js"></script>
 </body>
 </html>
